@@ -23,13 +23,14 @@ import os
 print("✓ os imported")
 
 print("Creating Flask app...")
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../frontend', static_url_path='')
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB limit
 # Initialize CORS to allow cross-origin requests
 CORS(app)
 print("✓ Flask app created")
 print("✓ CORS initialized")
+print(f"✓ Static folder: {app.static_folder}")
 
 # Create uploads directory if it doesn't exist
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
@@ -94,6 +95,14 @@ def score_resume_endpoint():
         return jsonify({'error': f'Failed to score resume: {str(e)}'}), 500
     
     return jsonify({'score': score})
+
+@app.route('/')
+def index():
+    return app.send_static_file('index.html')
+
+@app.route('/frontend/<path:path>')
+def send_frontend(path):
+    return app.send_static_file(f'frontend/{path}')
 
 if __name__ == '__main__':
     print("Starting server on http://0.0.0.0:5000...")
