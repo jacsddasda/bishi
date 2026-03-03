@@ -23,7 +23,7 @@ import os
 print("✓ os imported")
 
 print("Creating Flask app...")
-app = Flask(__name__, static_folder='../frontend', static_url_path='')
+app = Flask(__name__, static_folder='./frontend', static_url_path='')
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB limit
 # Initialize CORS to allow cross-origin requests
